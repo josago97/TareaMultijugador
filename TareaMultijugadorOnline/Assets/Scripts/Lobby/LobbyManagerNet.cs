@@ -8,6 +8,7 @@ using Zenject;
 public class LobbyManagerNet : MonoBehaviourPunCallbacks, ILobbyManagerNet
 {
     [Inject] private LobbyManager _lobbyManager;
+    //[Inject] private LobbyUIManager _lobbyUIManager;
 
     private void Start()
     {
@@ -19,7 +20,7 @@ public class LobbyManagerNet : MonoBehaviourPunCallbacks, ILobbyManagerNet
         if (!PhotonNetwork.IsConnectedAndReady)
         {
             //ManagerLobby.Instance.Conectando(true);
-            //PhotonNetwork.JoinLobby = true;
+            //PhotonNetwork.autojoinLobby = true;
             PhotonNetwork.AutomaticallySyncScene = true;
             PhotonNetwork.ConnectUsingSettings();
         }
@@ -59,5 +60,6 @@ public class LobbyManagerNet : MonoBehaviourPunCallbacks, ILobbyManagerNet
     public override void OnConnected()
     {
         Debug.Log("Connected");
+        //_lobbyUIManager.SetConnectingUIActive(false);
     }
 }

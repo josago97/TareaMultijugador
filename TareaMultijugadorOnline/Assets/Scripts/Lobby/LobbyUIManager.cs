@@ -7,12 +7,17 @@ public class LobbyUIManager : MonoBehaviour
     [SerializeField] private GameObject connecting;
     [SerializeField] private GameObject joinning;
 
-    public void SetConnecting(bool isConnecting)
+    private void Start()
+    {
+        //SetJoinningUIActive(false);
+    }
+
+    public void SetConnectingUIActive(bool isConnecting)
     {
         connecting.SetActive(isConnecting);
     }
 
-    public void SetJoinning(bool isJoinning)
+    public void SetJoinningUIActive(bool isJoinning)
     {
         joinning.SetActive(isJoinning);
     }

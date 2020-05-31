@@ -6,11 +6,11 @@ using Zenject;
 public class LobbyInstaller : MonoInstaller
 {
     [SerializeField] private LobbyManager lobbyManager;
-    [SerializeField] private LobbyManagerNet lobbyManagerNet;
+    [SerializeField] private ILobbyManagerNet lobbyManagerNet;
 
     public override void InstallBindings()
     {
-        Container.BindInstance<ILobbyManagerNet>(lobbyManagerNet);
+        //Container.BindInstance(lobbyManagerNet);
         Container.BindInstance(lobbyManager);
     }
 }
