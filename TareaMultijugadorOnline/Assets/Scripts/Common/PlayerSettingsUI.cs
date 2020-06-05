@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using Zenject;
 
-public class SettingPlayer : MonoBehaviour
+public class PlayerSettingsUI : MonoBehaviour
 {
     [SerializeField] private Color errorColor;
     [SerializeField] private TMP_InputField nicknameIPF;
@@ -16,6 +16,7 @@ public class SettingPlayer : MonoBehaviour
 
     private Color _defaultColor;
     private int _maxSizeNickName;
+    private string _nickname;
 
     private void Start()
     {

@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class CoreInstaller : MonoInstaller
+public class SettingDataInstaller : MonoInstaller
 {
-    [SerializeField] private SceneLoader sceneLoader;
-
     public override void InstallBindings()
     {
-        Container.BindInstances(sceneLoader);
+        Container.Bind<PlayerSettingData>().AsSingle();
     }
 }

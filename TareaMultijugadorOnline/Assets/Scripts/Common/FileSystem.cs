@@ -127,7 +127,7 @@ public static class FileSystem
                 pathBuilder.Append(Directory.GetParent(Application.dataPath));
         #endif
 
-        pathBuilder.Append("/Data");
+        pathBuilder.Append("/SavedData");
 
         var parentPath = pathBuilder.ToString();
         if (!Directory.Exists(parentPath)) Directory.CreateDirectory(parentPath);
