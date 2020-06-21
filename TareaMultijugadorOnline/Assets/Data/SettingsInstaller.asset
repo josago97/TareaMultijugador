@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameSettings: {fileID: 11400000, guid: 389895a3fdbae0146a348f2570c8a4b8, type: 2}
   playerSettings: {fileID: 11400000, guid: 5d8452ed402439a43bcf53459c9b3928, type: 2}
+  sceneSettings: {fileID: 11400000, guid: 577cf0b92d1161c4d8c163ea75a6ca47, type: 2}

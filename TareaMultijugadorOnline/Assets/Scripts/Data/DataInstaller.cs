@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class SettingDataInstaller : MonoInstaller
+public class DataInstaller : MonoInstaller
 {
     public override void InstallBindings()
     {
-        Container.Bind<PlayerSettingData>().AsSingle();
+        var playerData = new PlayerData();
+        playerData.Load();
+        Container.BindInstance(playerData);
     }
 }

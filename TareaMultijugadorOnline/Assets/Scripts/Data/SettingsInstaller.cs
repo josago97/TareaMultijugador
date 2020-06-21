@@ -6,11 +6,12 @@ using Zenject;
 [CreateAssetMenu(menuName = "Settings/Installer")]
 public class SettingsInstaller : ScriptableObjectInstaller
 {
-    public GameSettings gameSettings;
-    public PlayerSettings playerSettings;
+    [SerializeField] private GameSettings gameSettings;
+    [SerializeField] private PlayerSettings playerSettings;
+    [SerializeField] private SceneSettings sceneSettings;
 
     public override void InstallBindings()
     {
-        Container.BindInstances(gameSettings, playerSettings);
+        Container.BindInstances(gameSettings, playerSettings, sceneSettings);
     }
 }

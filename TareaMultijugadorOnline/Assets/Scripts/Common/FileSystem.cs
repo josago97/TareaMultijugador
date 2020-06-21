@@ -55,8 +55,22 @@ public static class FileSystem
     public static bool LoadEncrypt<T>(string fileName, out T data)
     {
         data = default;
+        bool loaded = false;
+
+        if (LoadEncrypt(fileName, out string json))
+        {
+            data = JsonConvert.DeserializeObject<T>(json);
+            loaded = true;
+        }
+
+        return loaded; 
+    }
+
+    public static bool LoadEncrypt(string fileName, out string data)
+    {
+        data = default;
         var secret = MySecret;
-        bool loaded = false;  
+        bool loaded = false;
 
         if (LoadBytes(fileName, out var bytes))
         {
@@ -68,7 +82,7 @@ public static class FileSystem
                 using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
                 using (var srDecrypt = new StreamReader(csDecrypt))
                 {
-                    data = JsonConvert.DeserializeObject<T>(srDecrypt.ReadToEnd());
+                    data = srDecrypt.ReadToEnd();
                     loaded = true;
                 }
             }
@@ -76,6 +90,8 @@ public static class FileSystem
 
         return loaded;
     }
+
+
 
     public static bool Save<T>(T data, string fileName)
     {
@@ -122,7 +138,7 @@ public static class FileSystem
         StringBuilder pathBuilder = new StringBuilder();
 
         #if UNITY_EDITOR
-                pathBuilder.Append(Path.Combine(Application.dataPath, @"..\.."));
+                pathBuilder.Append(Path.Combine(Application.dataPath, @"../.."));
         #else
                 pathBuilder.Append(Directory.GetParent(Application.dataPath));
         #endif

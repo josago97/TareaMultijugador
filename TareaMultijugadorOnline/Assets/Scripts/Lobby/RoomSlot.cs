@@ -10,5 +10,11 @@ public class RoomSlot : MonoBehaviour
     [SerializeField] private Button joinBTN;
 
 
+    public string Name
+    {
+        get => nameTXT.text;
+        set => nameTXT.text = value;
+    }
 
+    public Button JoinButton => joinBTN;
 }

@@ -1,22 +1,22 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSettingData
+public class PlayerData
 {
     private const string FILE_NAME = "player.dat";
 
+    [JsonProperty]
+    [SerializeField]
     private string _nickname;
 
+    [JsonIgnore]
     public string Nickname
     {
         get => _nickname;
         set => ChangeValue(ref _nickname, value);
-    }
-
-    public PlayerSettingData()
-    {
-        Load();
     }
 
     public void Save()

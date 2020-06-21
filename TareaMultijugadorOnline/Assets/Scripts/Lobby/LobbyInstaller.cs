@@ -5,12 +5,10 @@ using Zenject;
 
 public class LobbyInstaller : MonoInstaller
 {
-    [SerializeField] private LobbyManager lobbyManager;
-    [SerializeField] private ILobbyManagerNet lobbyManagerNet;
+    [SerializeField] private LobbyManagerNet lobbyManagerNet;
 
     public override void InstallBindings()
     {
-        //Container.BindInstance(lobbyManagerNet);
-        Container.BindInstance(lobbyManager);
+        Container.BindInstance(lobbyManagerNet);
     }
 }
