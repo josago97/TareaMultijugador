@@ -10,14 +10,18 @@ public class LobbyManagerNet : MonoBehaviourPunCallbacks
     private LobbyMenuUI _lobbyMenu;
     private LoadMessageUI _loadMessage;
     private RoomListUI _roomList;
-
+    private SceneLoader _sceneLoader;
+    private PlayerData _playerData;
 
     [Inject]
-    private void Construct(LobbyMenuUI lobbyMenu, LoadMessageUI loadMessage, RoomListUI roomList)
+    private void Construct(LobbyMenuUI lobbyMenu, LoadMessageUI loadMessage, RoomListUI roomList, 
+                           SceneLoader sceneLoader, PlayerData playerData)
     {
         _loadMessage = loadMessage;
         _lobbyMenu = lobbyMenu;
         _roomList = roomList;
+        _sceneLoader = sceneLoader;
+        _playerData = playerData;
     }
 
     private void Start()
@@ -25,7 +29,7 @@ public class LobbyManagerNet : MonoBehaviourPunCallbacks
         Connect();
     }
 
-    public bool CreateRoom(string name, int maxPlayerAmount)
+    public void CreateRoom(string name, int maxPlayerAmount)
     {
         RoomOptions options = new RoomOptions();
         options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable();
@@ -34,27 +38,23 @@ public class LobbyManagerNet : MonoBehaviourPunCallbacks
         options.IsOpen = true;
         options.IsVisible = true;
 
-        /*options.CustomRoomProperties.SetValor(DatosSala.PUBLICO, publica);
-        options.CustomRoomProperties.SetValor(DatosSala.ENJUEGO, false);
-        options.CustomRoomProperties.SetValor(DatosSala.CONTRASENA, contrasena);
-
-        options.CustomRoomPropertiesForLobby = new string[] { DatosSala.PUBLICO, DatosSala.CONTRASENA, DatosSala.ENJUEGO };*/
-
-        //ManagerLobby.Instance.Uniendo(true);
-
-        return PhotonNetwork.CreateRoom(name, options, TypedLobby.Default);
+        PhotonNetwork.CreateRoom(name, options, TypedLobby.Default);
     }
 
     public void JoinRoom(string roomName)
     {
-
+        PhotonNetwork.JoinRoom(roomName);
+        _loadMessage.Message = "Uniendo";
+        _loadMessage.Show();
+        _lobbyMenu.Hide();
     }
 
 
     private void Connect()
     {
-        if (!PhotonNetwork.IsConnectedAndReady)
+        if (!PhotonNetwork.IsConnected)
         {
+            SetNickname();
             PhotonNetwork.AutomaticallySyncScene = true;
             PhotonNetwork.ConnectUsingSettings();
 
@@ -64,8 +64,13 @@ public class LobbyManagerNet : MonoBehaviourPunCallbacks
         }
         else
         {
-            OnConnected();
+            OnJoinedLobby();
         }
+    }
+
+    public void SetNickname()
+    {
+        PhotonNetwork.NickName = _playerData.Nickname;
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -73,14 +78,24 @@ public class LobbyManagerNet : MonoBehaviourPunCallbacks
         _roomList.UpdateList(roomList);
     }
 
-    public override void OnJoinedLobby()
+    public override void OnConnectedToMaster()
     {
-        Debug.Log("Lobby");
+        PhotonNetwork.JoinLobby();
     }
 
-    public override void OnConnected()
+    public override void OnJoinedLobby()
     {
-        Debug.Log("Connected");
+        _loadMessage.Hide();
+        _lobbyMenu.Show();
+    }
+
+    public override void OnJoinedRoom()
+    {
+        _sceneLoader.LoadRoom();
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
         _loadMessage.Hide();
         _lobbyMenu.Show();
     }

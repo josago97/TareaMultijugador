@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 423c3cc9840f29e49945b81dc341c734, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
+  maxPlayerCount: 8
   defaultColor: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 1}
   colors:
   - {r: 1, g: 1, b: 0, a: 1}

@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: SceneSettings
   m_EditorClassIdentifier: 
   lobby: Lobby
+  room: Room
   game: 

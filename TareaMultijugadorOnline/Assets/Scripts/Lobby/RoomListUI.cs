@@ -28,10 +28,10 @@ public class RoomListUI : MonoBehaviour
 
         foreach (var room in roomList)
         {
-            if (room.IsVisible)
+            if (room.IsVisible && !room.RemovedFromList)
             {
                 RoomSlot slot = Instantiate(slotPrefab, container).GetComponent<RoomSlot>();
-                slot.name = room.Name;
+                slot.Name = room.Name;
                 if (room.IsOpen)
                 {
                     slot.JoinButton.onClick.AddListener(() => _lobbyManagerNet.JoinRoom(room.Name));

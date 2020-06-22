@@ -14,18 +14,12 @@ public class SceneLoader : MonoBehaviour
     [Inject]
     private void Construct(SceneSettings settings)
     {
-        Debug.Log("Puta madre");
         _settings = settings;
     }
 
     private void Awake()
     {
         SceneManager.sceneLoaded += SceneLoaded;
-    }
-
-    private void Start()
-    {
-        GetComponentInParent<ProjectContext>().Container.Inject(this);
     }
 
     private void OnDestroy()
@@ -36,6 +30,16 @@ public class SceneLoader : MonoBehaviour
     public void LoadLobby()
     {
         Load(_settings.Lobby);
+    }
+
+    public void LoadRoom()
+    {
+        Load(_settings.Room);
+    }
+
+    public void LoadGame()
+    {
+        Load(_settings.Game);
     }
 
     public void Exit()

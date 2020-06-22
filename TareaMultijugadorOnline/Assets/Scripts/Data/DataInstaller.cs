@@ -1,14 +1,16 @@
-﻿using System.Collections;
+﻿using Photon.Realtime;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class DataInstaller : MonoInstaller
 {
+    [SerializeField] private GameObject corePrefab;
+
     public override void InstallBindings()
     {
-        var playerData = new PlayerData();
-        playerData.Load();
-        Container.BindInstance(playerData);
+        //Container.Bind<SceneLoader>().FromComponentInNewPrefab(corePrefab).AsSingle().NonLazy();
+        Container.Bind<PlayerData>().AsSingle().OnInstantiated<PlayerData>((c, p) => p.Load());
     }
 }
