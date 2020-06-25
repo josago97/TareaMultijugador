@@ -29,6 +29,7 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadLobby()
     {
+        Debug.Log("Load Lobby");
         Load(_settings.Lobby);
     }
 

@@ -1,4 +1,6 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,11 +12,19 @@ public class RoomPlayerList : MonoBehaviour
     [SerializeField] private Transform container;
 
     private NetManager _netManager;
+    private GameSettings _gameSettings;
+
+    private Action<Player> _playerJoined;
+    private Action<Player> _playerLeft;
 
     [Inject]
-    private void Construct(NetManager netManager)
+    private void Construct(NetManager netManager, GameSettings gameSettings)
     {
         _netManager = netManager;
+        _gameSettings = gameSettings;
+
+        _playerJoined = _ => UpdateList();
+        _playerLeft = _ => UpdateList();
     }
 
     private void Start()
@@ -24,12 +34,16 @@ public class RoomPlayerList : MonoBehaviour
 
     private void OnEnable()
     {
-        
+        _netManager.PlayerJoined += _playerJoined;
+        _netManager.PlayerLeft += _playerLeft;
+        _netManager.PlayerPropertiesUpdated += UpdatePlayer;
     }
 
     private void OnDisable()
     {
-        
+        _netManager.PlayerJoined -= _playerJoined;
+        _netManager.PlayerLeft -= _playerLeft;
+        _netManager.PlayerPropertiesUpdated -= UpdatePlayer;
     }
 
     private void UpdateList()
@@ -39,7 +53,8 @@ public class RoomPlayerList : MonoBehaviour
         foreach (var player in PhotonNetwork.PlayerList)
         {
             var playerStyle = Instantiate(playerPrefab, container).GetComponent<PlayerStyle>();
-            playerStyle.Name = player.NickName;
+            player.TryGetColor(out int color);
+            playerStyle.SetData(player.NickName, color);
         }
     }
 
@@ -49,5 +64,10 @@ public class RoomPlayerList : MonoBehaviour
         {
             Destroy(container.GetChild(i).gameObject);
         }
+    }
+
+    private void UpdatePlayer(Player player, ExitGames.Client.Photon.Hashtable props)
+    {
+        UpdateList();
     }
 }

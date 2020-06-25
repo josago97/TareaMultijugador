@@ -10,6 +10,6 @@ public class GameSettings : ScriptableObject
     [SerializeField] private Color[] colors;
 
     public int MaxPlayerCount => maxPlayerCount;
-    public Color Default => defaultColor;
+    public Color DefaultColor => defaultColor;
     public Color[] Colors => colors;
 }

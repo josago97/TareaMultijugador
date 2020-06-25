@@ -2,19 +2,33 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 public class PlayerStyle : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI nameTXT;
     [SerializeField] private MeshRenderer meshRenderer;
 
-    public string Name
+    private GameSettings _gameSettings;
+
+    [Inject]
+    private void Construct (GameSettings gameSettings)
     {
-        set => nameTXT.text = value;
+        _gameSettings = gameSettings;
     }
 
-    public Color Color
+    public void SetData(string name, int color)
     {
-        set => meshRenderer.material.color = value;
+        nameTXT.text = name;
+        Debug.Log(_gameSettings);
+
+        if (color >= 0 && color < _gameSettings.Colors.Length)
+        {
+            meshRenderer.material.color = _gameSettings.Colors[color];
+        }
+        else
+        {
+            meshRenderer.material.color = _gameSettings.DefaultColor;
+        }
     }
 }
