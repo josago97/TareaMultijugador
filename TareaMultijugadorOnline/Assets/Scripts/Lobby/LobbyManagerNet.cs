@@ -38,7 +38,7 @@ public class LobbyManagerNet : MonoBehaviourPunCallbacks
         options.IsOpen = true;
         options.IsVisible = true;
 
-        PhotonNetwork.CreateRoom(name, options, TypedLobby.Default);
+        PhotonNetwork.CreateRoom(name, options);
     }
 
     public void JoinRoom(string roomName)
@@ -66,6 +66,8 @@ public class LobbyManagerNet : MonoBehaviourPunCallbacks
         {
             OnJoinedLobby();
         }
+
+        PhotonNetwork.LocalPlayer.ClearCustomProperties();
     }
 
     public void SetNickname()

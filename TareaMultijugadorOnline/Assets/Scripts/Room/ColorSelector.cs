@@ -18,12 +18,11 @@ public class ColorSelector : MonoBehaviour
         _gameSettings = gameSettings;
 
         _colors = new List<int>();
-        _netManager.PlayerJoined += OnPlayerJoined;
     }
 
     private void Start()
     {
-
+        OnMasterClientChanged(_netManager.MasterClient);
     }
 
     private void OnEnable()
@@ -38,9 +37,9 @@ public class ColorSelector : MonoBehaviour
         _netManager.PlayerLeft -= OnPlayerLeft;
     }
 
-    private void OnMasterClientChanged(Player newMasterClient, bool isMe)
+    private void OnMasterClientChanged(Player newMasterClient)
     {
-        if (isMe)
+        if (newMasterClient != null && newMasterClient.IsLocal)
         {
             UpdateColors();
 
@@ -65,11 +64,10 @@ public class ColorSelector : MonoBehaviour
         {
             color = FindColor();
             player.SetColor(color);
+            Debug.Log(color);
         }
-
+        Debug.Log($"{player.NickName} {color}");
         _colors.Add(color);
-
-        Debug.Log($"Nuevo color => {color}");
     }
 
     private void OnPlayerLeft(Player player)

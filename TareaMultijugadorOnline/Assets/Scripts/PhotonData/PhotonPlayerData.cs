@@ -1,11 +1,18 @@
 ﻿using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class PhotonPlayerData
 {
     private const string colorKey = "c";
+
+    public static void ClearCustomProperties(this Player player)
+    {
+        player.CustomProperties.Clear();
+        player.SetCustomProperties(player.CustomProperties);
+    }
 
     public static void SetColor(this Player player, int color)
     {
@@ -20,11 +27,10 @@ public static class PhotonPlayerData
         return hasData;
     }
 
-    private static void SetData(Player player, string key, object data)
+    private static void SetData(Player player, string key, object value)
     {
-        ExitGames.Client.Photon.Hashtable datos = player.CustomProperties ?? new ExitGames.Client.Photon.Hashtable();
-        datos.Add(key, data);
-        player.SetCustomProperties(datos);
+        var data = new ExitGames.Client.Photon.Hashtable() { { key, value } };
+        player.SetCustomProperties(data);
     }
 
     private static bool TryGetData<T>(Player player, string key, out T data)

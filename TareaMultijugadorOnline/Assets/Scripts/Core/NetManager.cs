@@ -9,7 +9,7 @@ public class NetManager : MonoBehaviourPunCallbacks
     public event Action LeftRoom;
     public event Action<Player> PlayerJoined;
     public event Action<Player> PlayerLeft;
-    public event Action<Player, bool> MasterClientChanged;
+    public event Action<Player> MasterClientChanged;
     public event Action<Player, Hashtable> PlayerPropertiesUpdated;
 
     public Player LocalPlayer => PhotonNetwork.LocalPlayer;
@@ -39,7 +39,7 @@ public class NetManager : MonoBehaviourPunCallbacks
 
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        MasterClientChanged?.Invoke(newMasterClient, newMasterClient.UserId == LocalPlayer.UserId);
+        MasterClientChanged?.Invoke(newMasterClient);
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)

@@ -20,7 +20,6 @@ public class PlayerStyle : MonoBehaviour
     public void SetData(string name, int color)
     {
         nameTXT.text = name;
-        Debug.Log(_gameSettings);
 
         if (color >= 0 && color < _gameSettings.Colors.Length)
         {
