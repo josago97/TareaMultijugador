@@ -7,7 +7,7 @@ using Zenject;
 
 public class SceneLoader : MonoBehaviour
 {
-    public event Action OnLevelLoaded;
+    public event Action LevelLoaded;
 
     private SceneSettings _settings;
 
@@ -70,7 +70,7 @@ public class SceneLoader : MonoBehaviour
 
     private void Load(string sceneName)
     {
-        SceneManager.LoadScene(sceneName);
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
     //TODO: Para la pantalla de carga
@@ -81,6 +81,6 @@ public class SceneLoader : MonoBehaviour
 
     private void SceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        OnLevelLoaded?.Invoke();
+        LevelLoaded?.Invoke();
     }
 }
