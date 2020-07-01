@@ -6,6 +6,7 @@ using System;
 public class NetManager : MonoBehaviourPunCallbacks
 {
     public event Action ConnectedToMaster;
+    public event Action JoinnedRoom;
     public event Action LeftRoom;
     public event Action<Player> PlayerJoined;
     public event Action<Player> PlayerLeft;
@@ -20,6 +21,11 @@ public class NetManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         ConnectedToMaster?.Invoke();
+    }
+
+    public override void OnJoinedRoom()
+    {
+        JoinnedRoom?.Invoke();
     }
 
     public override void OnLeftRoom()

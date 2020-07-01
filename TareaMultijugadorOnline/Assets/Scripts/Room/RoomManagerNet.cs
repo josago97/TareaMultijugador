@@ -4,14 +4,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class RoomManagerNet : MonoBehaviourPunCallbacks
+public class RoomManagerNet : MonoBehaviour
 {
     private SceneLoader _sceneLoader;
+    private NetManager _netManager;
 
     [Inject]
-    private void Construct(SceneLoader sceneLoader)
+    private void Construct(SceneLoader sceneLoader, NetManager netManager)
     {
         _sceneLoader = sceneLoader;
+        _netManager = netManager;
+    }
+
+    private void OnEnable()
+    {
+        _netManager.LeftRoom += GoLobby;
+    }
+
+    private void OnDisable()
+    {
+        _netManager.LeftRoom -= GoLobby;
     }
 
     public void Play()
@@ -25,10 +37,10 @@ public class RoomManagerNet : MonoBehaviourPunCallbacks
         if (PhotonNetwork.InRoom)
             PhotonNetwork.LeaveRoom();
         else
-            OnLeftRoom();
+            GoLobby();
     }
 
-    public override void OnLeftRoom()
+    public void GoLobby()
     {
         _sceneLoader.LoadLobby();
     }
