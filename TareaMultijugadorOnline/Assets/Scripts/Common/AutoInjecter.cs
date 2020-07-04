@@ -8,6 +8,6 @@ public class AutoInjecter : MonoBehaviour
     private void Awake()
     {
         var context = GetComponentInParent<RunnableContext>() ?? FindObjectOfType<SceneContext>();
-        context.Container.InjectGameObject(gameObject);
+        context?.Container.InjectGameObject(gameObject);
     }
 }

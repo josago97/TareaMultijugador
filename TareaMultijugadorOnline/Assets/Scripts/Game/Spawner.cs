@@ -1,18 +1,20 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private Transform[] points;
+    
+    public GameObject Spawn(int id)
     {
-        
-    }
+        Transform point = points[id];
+        var instance =  PhotonNetwork.Instantiate(playerPrefab.name, point.position, point.rotation);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        instance.GetComponent<PlayerController>().SetCamera(Camera.main);
+
+        return instance;
     }
 }

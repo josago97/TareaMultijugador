@@ -64,9 +64,8 @@ public class ColorSelector : MonoBehaviour
         {
             color = FindColor();
             player.SetColor(color);
-            Debug.Log(color);
         }
-        Debug.Log($"{player.NickName} {color}");
+
         _colors.Add(color);
     }
 

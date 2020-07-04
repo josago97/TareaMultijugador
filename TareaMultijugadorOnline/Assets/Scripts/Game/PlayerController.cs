@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
         Move();
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         RotateCamera();
     }
@@ -72,24 +72,36 @@ public class PlayerController : MonoBehaviour
         _controls.Disable();
     }
 
+    public void SetCamera(Camera camera)
+    {
+        camera.transform.SetParent(cameraPosition, false);
+        camera.transform.localPosition = Vector3.zero;
+        camera.transform.localEulerAngles = Vector3.zero;
+    }
+
     private void Move()
     {
         var velocity = _rigid.velocity;
         var newVelocity = transform.TransformDirection(_moveDirection * linearSpeed);
+
         newVelocity.y = velocity.y;
         _rigid.velocity = newVelocity;
     }
 
     private void Rotate()
     {
-        var rotation = Quaternion.Euler(0, _turnDirection.x * angularSpeed * Time.fixedDeltaTime, 0);
-        _rigid.MoveRotation(_rigid.rotation * rotation);
+        float aux = 0;
+        var rotation = transform.localEulerAngles.y + _turnDirection.x * angularSpeed * Time.fixedDeltaTime;
+        rotation = Mathf.SmoothDampAngle(transform.localEulerAngles.y, rotation, ref aux, 0.01f);
+        _rigid.MoveRotation(Quaternion.Euler(0, rotation, 0));
     }
 
     private void RotateCamera()
     {
-        _cameraRotation = _cameraRotation - _turnDirection.y * cameraAngularSpeed * Time.fixedDeltaTime;
-        _cameraRotation = Mathf.Clamp(_cameraRotation, cameraRotation.x, cameraRotation.y);
+        float aux = 0;
+        var rotation = _cameraRotation - _turnDirection.y * cameraAngularSpeed * Time.fixedDeltaTime;
+        rotation = Mathf.Clamp(rotation, cameraRotation.x, cameraRotation.y);
+        _cameraRotation = Mathf.SmoothDampAngle(_cameraRotation, rotation, ref aux, 0.01f);
         cameraPosition.localEulerAngles = new Vector3(_cameraRotation, 0, 0);
     }
 }

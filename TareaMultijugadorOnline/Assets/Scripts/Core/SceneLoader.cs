@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,7 +28,8 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadGame()
     {
-        Load(_settings.Game);
+        PhotonNetwork.AutomaticallySyncScene = true;
+        PhotonNetwork.LoadLevel(_settings.Game);
     }
 
     public void Exit()
