@@ -16,17 +16,26 @@ public class RoomManagerNet : MonoBehaviour
         _netManager = netManager;
     }
 
+    private void OnEnable()
+    {
+        _netManager.LeftRoom += GoLobby;
+    }
+
+    private void OnDisable()
+    {
+        _netManager.LeftRoom -= GoLobby;
+    }
+
     public void Play()
     {
         PhotonNetwork.CurrentRoom.IsOpen = false;
-        _sceneLoader.LoadGame();
+        _sceneLoader.LoadGamePhoton();
     }
 
     public void Back()
     {
         if (PhotonNetwork.InRoom)
         {
-            _netManager.LeftRoom += GoLobby;
             PhotonNetwork.LeaveRoom();
         }
         else
@@ -35,7 +44,6 @@ public class RoomManagerNet : MonoBehaviour
 
     public void GoLobby()
     {
-        _netManager.LeftRoom -= GoLobby;
         _sceneLoader.LoadLobby();
     }
 }

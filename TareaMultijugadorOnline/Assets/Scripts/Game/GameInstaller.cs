@@ -7,9 +7,10 @@ public class GameInstaller : MonoInstaller
 {
     [SerializeField] private GameManager gameManager;
     [SerializeField] private Spawner spawner;
+    [SerializeField] private PlatformManager platformManager;
 
     public override void InstallBindings()
     {
-        Container.BindInstances(gameManager, spawner);
+        Container.BindInstances(gameManager, spawner, platformManager);
     }
 }

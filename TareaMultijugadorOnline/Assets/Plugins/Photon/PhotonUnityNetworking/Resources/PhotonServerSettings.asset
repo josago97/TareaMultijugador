@@ -33,6 +33,11 @@ MonoBehaviour:
   RpcList:
   - ClickRpc
   - DestroyRpc
+  - PlayMusicRPC
+  - StopMusicRPC
+  - HideFloor
+  - HidePlatformRPC
+  - HideFloorRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -10,10 +10,15 @@ public class SceneLoader : MonoBehaviour
 {
     private SceneSettings _settings;
 
+    private bool isQuitting;
+
     [Inject]
     private void Construct(SceneSettings settings)
     {
         _settings = settings;
+
+        isQuitting = false;
+        Application.quitting += () => isQuitting = true;
     }
 
     public void LoadLobby()
@@ -26,10 +31,14 @@ public class SceneLoader : MonoBehaviour
         Load(_settings.Room);
     }
 
-    public void LoadGame()
+    public void LoadRoomPhoton()
     {
-        PhotonNetwork.AutomaticallySyncScene = true;
-        PhotonNetwork.LoadLevel(_settings.Game);
+        LoadPhoton(_settings.Room);
+    }
+
+    public void LoadGamePhoton()
+    {
+        LoadPhoton(_settings.Game);
     }
 
     public void Exit()
@@ -39,7 +48,16 @@ public class SceneLoader : MonoBehaviour
 
     private void Load(string sceneName)
     {
-        Debug.Log($"Load {sceneName}");
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        if(!isQuitting)
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+    }
+
+    private void LoadPhoton(string sceneName)
+    {
+        if (!isQuitting)
+        {
+            PhotonNetwork.AutomaticallySyncScene = true;
+            PhotonNetwork.LoadLevel(sceneName);
+        }
     }
 }

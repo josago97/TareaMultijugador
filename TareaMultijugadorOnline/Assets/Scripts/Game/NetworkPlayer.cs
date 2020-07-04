@@ -9,6 +9,8 @@ public class NetworkPlayer : MonoBehaviour, IPunObservable, IPunInstantiateMagic
     [SerializeField] private PlayerStyle playerStyle;
     [SerializeField] private PlayerController playerController;
 
+    public int Id { get; private set; }
+
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         var player = info.Sender;
@@ -23,6 +25,8 @@ public class NetworkPlayer : MonoBehaviour, IPunObservable, IPunInstantiateMagic
             playerController.Activate();
         else
             playerController.Deactivate();
+
+        Id = player.ActorNumber;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
