@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     private NetManager _netManager;
     private SceneLoader _sceneLoader;
     private PlatformManager _platformManager;
+
+    public GameObject LocalPlayer { get; private set; }
     
     [Inject]
     private void Construct(Spawner spawner, NetManager netManager, SceneLoader sceneLoader, PlatformManager platformManager)
@@ -76,6 +78,8 @@ public class GameManager : MonoBehaviour
 
             _players.Add(player);
         }
+
+        LocalPlayer = _players.Find(p => p.Id == _netManager.LocalPlayer.ActorNumber).GameObject;
     }
 
     private void OnMasterClientChanged(Player newMasterClient)

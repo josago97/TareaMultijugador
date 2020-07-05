@@ -7,14 +7,21 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private Transform[] points;
-    
+
+    private GameObject _instance;
+
     public GameObject Spawn(int id)
     {
         Transform point = points[id];
-        var instance =  PhotonNetwork.Instantiate(playerPrefab.name, point.position, point.rotation);
+        _instance =  PhotonNetwork.Instantiate(playerPrefab.name, point.position, point.rotation);
 
-        instance.GetComponent<PlayerController>().SetCamera(Camera.main);
+        _instance.GetComponent<PlayerController>().SetCamera(Camera.main);
 
-        return instance;
+        return _instance;
+    }
+
+    private void OnDestroy()
+    {
+        PhotonNetwork.Destroy(_instance);
     }
 }

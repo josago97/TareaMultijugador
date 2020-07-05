@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
     {
         float aux = 0;
         var rotation = transform.localEulerAngles.y + _turnDirection.x * angularSpeed * Time.fixedDeltaTime;
-        rotation = Mathf.SmoothDampAngle(transform.localEulerAngles.y, rotation, ref aux, 0.01f);
+        rotation = Mathf.SmoothDampAngle(transform.localEulerAngles.y, rotation, ref aux, Time.fixedDeltaTime);
         _rigid.MoveRotation(Quaternion.Euler(0, rotation, 0));
     }
 
@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
         float aux = 0;
         var rotation = _cameraRotation - _turnDirection.y * cameraAngularSpeed * Time.fixedDeltaTime;
         rotation = Mathf.Clamp(rotation, cameraRotation.x, cameraRotation.y);
-        _cameraRotation = Mathf.SmoothDampAngle(_cameraRotation, rotation, ref aux, 0.01f);
+        _cameraRotation = Mathf.SmoothDampAngle(_cameraRotation, rotation, ref aux, Time.fixedDeltaTime);
         cameraPosition.localEulerAngles = new Vector3(_cameraRotation, 0, 0);
     }
 }
