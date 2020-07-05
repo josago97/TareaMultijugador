@@ -17,7 +17,7 @@ public class Destroyer : MonoBehaviour
     {
         if(other.TryGetComponent<NetworkPlayer>(out var player))
         {
-
+            _gameManager.KillPlayer(player);
         }
     }
 }

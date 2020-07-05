@@ -118,7 +118,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""id"": ""5888398b-7e07-4beb-ab5d-6fcd27813dbe"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
-                    ""processors"": ""ScaleVector2(y=0.35)"",
+                    ""processors"": ""ScaleVector2(y=0.5)"",
                     ""groups"": """",
                     ""action"": ""Turn"",
                     ""isComposite"": false,

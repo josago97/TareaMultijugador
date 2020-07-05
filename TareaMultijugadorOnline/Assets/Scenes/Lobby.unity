@@ -909,8 +909,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1919591757}
   m_HandleRect: {fileID: 1919591756}
   m_Direction: 2
-  m_Value: 0.9999999
-  m_Size: 0.5412705
+  m_Value: 1
+  m_Size: 0.5431392
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3026,6 +3026,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameIPF: {fileID: 1487118232}
+  createtBTN: {fileID: 72336842}
 --- !u!1 &1057209609
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private Vector2 musicTime;
     [SerializeField] private GameObject floor;
+    [SerializeField] private FinalUI finalUI;
 
     private List<PlayerInfo> _players;
     private PhotonView _photonView;
@@ -19,16 +20,18 @@ public class GameManager : MonoBehaviour
     private NetManager _netManager;
     private SceneLoader _sceneLoader;
     private PlatformManager _platformManager;
+    private Viewer _viewer;
 
     public GameObject LocalPlayer { get; private set; }
-    
+
     [Inject]
-    private void Construct(Spawner spawner, NetManager netManager, SceneLoader sceneLoader, PlatformManager platformManager)
+    private void Construct(Spawner spawner, NetManager netManager, SceneLoader sceneLoader, PlatformManager platformManager, Viewer viewer)
     {
         _spawner = spawner;
         _netManager = netManager;
         _sceneLoader = sceneLoader;
         _platformManager = platformManager;
+        _viewer = viewer;
     }
 
     private void Awake()
@@ -38,7 +41,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        _spawner.Spawn(_netManager.LocalPlayer.ActorNumber);
+        LocalPlayer = _spawner.Spawn(_netManager.LocalPlayer.ActorNumber);
 
         if (PhotonNetwork.MasterClient.IsLocal)
             StartCoroutine(GameplayCor());
@@ -58,6 +61,26 @@ public class GameManager : MonoBehaviour
         _netManager.PlayerLeft -= OnPlayerLeftRoom;
     }
 
+    public void KillPlayer(NetworkPlayer networkPlayer)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            var player = _players.Find(p => p.GameObject.GetComponent<NetworkPlayer>() == networkPlayer);
+            player.IsAlive = false;
+            _photonView.RPC(nameof(DestroyRPC), RpcTarget.All, player.Id);
+        }
+    }
+
+    [PunRPC]
+    private void DestroyRPC(int id)
+    {
+        if(id == PhotonNetwork.LocalPlayer.ActorNumber)
+        {
+            _viewer.View();
+            PhotonNetwork.Destroy(LocalPlayer);
+        }
+    }
+
     public void GoLobby()
     {
         _sceneLoader.LoadLobby();
@@ -72,14 +95,13 @@ public class GameManager : MonoBehaviour
             var player = new PlayerInfo()
             {
                 Id = networkPlayer.Id,
+                Name = networkPlayer.NickName,
                 IsAlive = true,
                 GameObject = networkPlayer.gameObject
             };
 
             _players.Add(player);
         }
-
-        LocalPlayer = _players.Find(p => p.Id == _netManager.LocalPlayer.ActorNumber).GameObject;
     }
 
     private void OnMasterClientChanged(Player newMasterClient)
@@ -89,7 +111,7 @@ public class GameManager : MonoBehaviour
 
     private void OnPlayerLeftRoom(Player otherPlayer)
     {
-        _players.RemoveAll(p => p.Id == otherPlayer.ActorNumber);
+        _players?.RemoveAll(p => p.Id == otherPlayer.ActorNumber);
     }
 
 
@@ -115,6 +137,12 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(2);
             _photonView.RPC(nameof(HidePlatformRPC), RpcTarget.All);
         }
+
+        var winner = _players.FirstOrDefault(p => p.IsAlive);
+        string winnerName = winner != null ? winner.Name : null;
+        _photonView.RPC(nameof(FinalRPC), RpcTarget.All, winnerName);
+        yield return new WaitForSeconds(4);
+        _sceneLoader.LoadRoomPhoton();
     }
 
     IEnumerator WaitingPlayersCor()
@@ -149,5 +177,11 @@ public class GameManager : MonoBehaviour
     private void HideFloorRPC()
     {
         floor.gameObject.SetActive(false);
+    }
+
+    [PunRPC]
+    private void FinalRPC(string winner)
+    {
+        finalUI.Show(winner);
     }
 }

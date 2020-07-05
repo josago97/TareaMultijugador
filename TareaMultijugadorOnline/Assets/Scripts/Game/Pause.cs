@@ -45,7 +45,7 @@ public class Pause : MonoBehaviour, IPauseActions
         pauseUI.gameObject.SetActive(true);
         isPaused = true;
         Cursor.visible = true;
-        _gameManager.LocalPlayer.GetComponent<PlayerController>().Deactivate();
+        _gameManager.LocalPlayer?.GetComponent<PlayerController>().Deactivate();
     }
 
     private void QuitPause()
@@ -53,7 +53,7 @@ public class Pause : MonoBehaviour, IPauseActions
         pauseUI.gameObject.SetActive(false);
         isPaused = false;
         Cursor.visible = false;
-        _gameManager.LocalPlayer.GetComponent<PlayerController>().Activate();
+        _gameManager.LocalPlayer?.GetComponent<PlayerController>().Activate();
     }
 
     private void OnDestroy()

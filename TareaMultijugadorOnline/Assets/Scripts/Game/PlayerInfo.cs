@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerInfo
 {
     public int Id { get; set; }
+    public string Name { get; set; }
     public bool IsAlive { get; set; }
     public GameObject GameObject { get; set; }
 }

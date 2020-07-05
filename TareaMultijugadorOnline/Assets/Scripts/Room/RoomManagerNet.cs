@@ -26,6 +26,14 @@ public class RoomManagerNet : MonoBehaviour
         _netManager.LeftRoom -= GoLobby;
     }
 
+    private void Start()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = true;
+        }
+    }
+
     public void Play()
     {
         PhotonNetwork.CurrentRoom.IsOpen = false;

@@ -20,8 +20,9 @@ public class Spawner : MonoBehaviour
         return _instance;
     }
 
-    private void OnDestroy()
+    /*private void OnDestroy()
     {
-        PhotonNetwork.Destroy(_instance);
-    }
+        if(_instance != null)
+            PhotonNetwork.Destroy(_instance);
+    }*/
 }
