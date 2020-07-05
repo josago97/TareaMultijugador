@@ -36,6 +36,7 @@ public class PlayerSettingsUI : MonoBehaviour
         string newNickName = nicknameIPF.text.Trim();
         _playerData.Nickname = newNickName;
         _nickname = _playerData.Nickname;
+        CheckNickName(nicknameIPF.text);
     }
 
     private void InitNickName()
